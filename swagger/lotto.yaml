@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Lotto - Totalizator Sportowy
+  description: Manual creation of model
+  version: 1.0.0
+
+servers:
+  - url: 'https://www.lotto.pl/api/'
+
+tags:
+  - name: Lotto
+    description: Lotto service
+
+paths:
+  /lotteries/draw-results/by-gametype:
+    get:
+      summary: get draw results by game type
+      description: retrieve game results
+      operationId: getDrawResult
+      parameters:
+        - name: game
+          description: game type name
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Lotto
+      responses:
+        200:
+          description: results found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrawResultByGameTypeResponse'
+
+components:
+  schemas:
+    DrawResultByGameTypeResponse:
+      description: draw result response to specific game type
+      type: object
+      properties:
+        totalRows:
+          description: total rows number
+          type: number
