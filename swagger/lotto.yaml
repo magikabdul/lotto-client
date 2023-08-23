@@ -20,7 +20,7 @@ paths:
       parameters:
         - name: game
           description: game type name
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -32,9 +32,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DrawResultByGameTypeResponse'
+        422:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
+    ErrorResponse:
+      description: Error response from Lotto Service
+      type: object
+      properties:
+        errors:
+          $ref: "#/components/schemas/Errors"
+        code:
+          type: integer
+          example: 422
+    Errors:
+      description: errors list
+      type: object
+      properties:
+        size:
+          type: array
+          items:
+            type: string
+          example: A value for the 'size' property is not provided
+        sort:
+          type: array
+          items:
+            type: string
+          example: A value for the 'sort' property is not provided
+        index:
+          type: array
+          items:
+            type: string
+          example: A value for the 'index' property is not provided
+        order:
+          type: array
+          items:
+            type: string
+          example: A value for the 'order' property is not provided
     DrawResultByGameTypeResponse:
       description: draw result response to specific game type
       type: object
