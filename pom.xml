@@ -32,6 +32,8 @@
         <tidy-maven-plugin.version>1.2.0</tidy-maven-plugin.version>
         <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
         <swagger-codegen-maven-plugin.version>3.0.46</swagger-codegen-maven-plugin.version>
+        <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
+        <formatter-maven-plugin.version>2.23.0</formatter-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -193,7 +195,7 @@
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
-                <version>2.23.0</version>
+                <version>${formatter-maven-plugin.version}</version>
                 <configuration>
                     <compilerCompliance>${java.version}</compilerCompliance>
                     <compilerSource>${java.version}</compilerSource>
@@ -214,7 +216,7 @@
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>impsort-maven-plugin</artifactId>
-                <version>1.9.0</version>
+                <version>${impsort-maven-plugin.version}</version>
                 <configuration>
                     <compliance>${java.version}</compliance>
                     <removeUnused>true</removeUnused>
