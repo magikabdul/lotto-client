@@ -1,4 +1,4 @@
-{{#description}}@ApiModel(description = "{{.}}"){{/description}}
+{{#description}}@Schema(description = "{{.}}"){{/description}}
 @Value
 @NonFinal
 @Jacksonized
@@ -26,7 +26,6 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {{#seriali
 {{/vars}}
 
 {{#vars}}
-    @ApiModelProperty({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
     {{#vendorExtensions.extraAnnotation}}
         {{{vendorExtensions.extraAnnotation}}}
     {{/vendorExtensions.extraAnnotation}}
