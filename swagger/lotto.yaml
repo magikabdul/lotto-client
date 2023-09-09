@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: Lotto - Totalizator Sportowy
+  description: Manual creation of model
+  version: 1.0.0
+
+servers:
+  - url: 'https://www.lotto.pl/api/'
+
+tags:
+  - name: Lotto
+    description: Lotto service
+
+paths:
+  /lotteries/draw-results/by-gametype:
+    get:
+      summary: get draw results by game type
+      description: retrieve game results
+      operationId: getDrawResult
+      parameters:
+        - name: game
+          description: game type name
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/GameType'
+        - name: index
+          in: query
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: sort
+          in: query
+          required: true
+          schema:
+            type: string
+            default: drawDate
+        - name: order
+          in: query
+          required: true
+          schema:
+            type: string
+            default: desc
+      responses:
+        200:
+          description: results found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrawResultByGameTypeResponse'
+        422:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidParametersErrorResponse'
+        404:
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponse'
+
+components:
+  schemas:
+    NotFoundErrorResponse:
+      description: Not found error response
+      type: object
+      properties:
+        type:
+          type: string
+          example: "https://tools.ietf.org/html/rfc7231#section-6.5.4"
+        title:
+          type: string
+          example: "Not Found"
+        status:
+          type: integer
+          example: 404
+        traceId:
+          type: string
+          example: "00-92d1a1004a5226850159cb6030f5b59b-5b1587973877fd9f-00"
+
+    InvalidParametersErrorResponse:
+      description: Error response from Lotto Service
+      type: object
+      properties:
+        errors:
+          $ref: "#/components/schemas/Errors"
+        code:
+          type: integer
+          example: 422
+
+    Errors:
+      description: errors list
+      type: object
+      properties:
+        size:
+          type: array
+          items:
+            type: string
+          example: [ "A value for the 'size' property is not provided" ]
+        sort:
+          type: array
+          items:
+            type: string
+          example: [ "A value for the 'sort' property is not provided" ]
+        index:
+          type: array
+          items:
+            type: string
+          example: [ "A value for the 'index' property is not provided" ]
+        order:
+          type: array
+          items:
+            type: string
+          example: [ "A value for the 'order' property is not provided" ]
+
+    DrawResultByGameTypeResponse:
+      description: draw result response to specific game type
+      type: object
+      properties:
+        totalRows:
+          description: total rows number
+          type: integer
+        items:
+          description: draw result item object
+          type: array
+          items:
+            $ref: '#/components/schemas/DrawItem'
+        meta:
+          type: object
+        code:
+          type: integer
+
+    DrawItem:
+      type: object
+      properties:
+        drawSystemId:
+          type: integer
+          example: 14777
+        drawDate:
+          type: string
+          format: date-time
+          description: The date of draw
+          example: '2023-08-22T22:00:00Z'
+        gameType:
+          $ref: '#/components/schemas/GameType'
+        multiplierValue:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DrawResult'
+        showSpecialResults:
+          type: boolean
+        isNewEuroJackpotDraw:
+          type: boolean
+
+    DrawResult:
+      type: object
+      properties:
+        drawSystemId:
+          type: integer
+          example: 14777
+        drawDate:
+          type: string
+          format: date-time
+          description: The date of draw
+          example: '2023-08-22T22:00:00Z'
+        gameType:
+          $ref: '#/components/schemas/GameType'
+        resultsJson:
+          type: array
+          items:
+            type: integer
+        specialResults:
+          type: array
+          items:
+            type: integer
+
+    GameType:
+      type: string
+      enum:
+        - Lotto
+        - MiniLotto
+        - EkstraPensja
+        - MultiMulti

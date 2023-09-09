@@ -1,0 +1,13 @@
+internal:
+  services:
+    lotto:
+      uri:
+        scheme: https
+        host: ${LOTTO_CLIENT_HOST:www.lotto.pl}
+        port: ${LOTTO_CLIENT_PORT:443}
+      paths:
+        basePath: /api/lotteries
+        drawResultsPath: draw-results/by-gametype
+      timeout:
+        connect: ${CONNECT_TIMEOUT:10000}
+        read: ${READ_TIMEOUT:10000}

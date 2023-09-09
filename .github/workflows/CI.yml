@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: []
-  pull_request:
-    branches: [main]
+    branches: [  ]
   workflow_dispatch:
 
 jobs:
@@ -19,6 +17,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
+#          cache: maven
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
+      - name: Discord notification -> success
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "CI"
+      - name: Discord notification -> non success
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ !success() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "CI"
